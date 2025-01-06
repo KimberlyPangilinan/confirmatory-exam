@@ -15,5 +15,5 @@ export default defineNuxtConfig({
     typeCheck: true
   },
 
-  modules: ['nuxt-auth-utils']
+  modules: ['nuxt-auth-utils', '@pinia/nuxt']
 })

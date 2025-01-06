@@ -1,24 +1,15 @@
 <script setup>
-const { loggedIn, user, fetch: refreshSession } = useUserSession()
-const credentials = reactive({
-    email: '',
-    password: '',
+import { useAuth } from "~/store/useAuth";
+const credentials = ref({
+    email: "",
+    password: "",
 })
-async function login() {
-    $fetch('/api/login', {
-        method: 'POST',
-        body: credentials
-    })
-        .then(async () => {
-            // Refresh the session on client-side and redirect to the home page
-            await refreshSession()
-            await navigateTo('/')
-        })
-        .catch(() => alert('Bad credentials'))
-}
+
+const auth = useAuth();
+
 </script>
 <template>
-    <form @submit.prevent="login">
+    <form @submit.prevent="auth.login(credentials)">
         <input v-model="credentials.email" type="email" placeholder="Email" />
         <input v-model="credentials.password" type="password" placeholder="Password" />
         <button type="submit">Login</button>

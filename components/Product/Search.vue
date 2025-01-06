@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 <template>
-    <div>Product Search</div>
+  <div>Product Search</div>
 </template>

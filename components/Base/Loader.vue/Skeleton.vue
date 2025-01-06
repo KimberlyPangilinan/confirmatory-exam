@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 <template>
-    <div>Loader Skeleton</div>
+  <div>Loader Skeleton</div>
 </template>

@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 <template>
-    <div>Checkout Page</div>
+  <div>Checkout Page</div>
 </template>

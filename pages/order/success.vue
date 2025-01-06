@@ -1,6 +1,4 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 <template>
-    <div>Order Confirmation Page</div>
+  <div>Order Confirmation Page</div>
 </template>

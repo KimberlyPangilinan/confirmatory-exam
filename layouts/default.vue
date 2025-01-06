@@ -1,7 +1,6 @@
-<script setup>
-</script>
+<script setup></script>
 <template>
-    <LayoutHeader/>
-    <slot/>
-    <LayoutFooter/>
+  <LayoutHeader />
+  <slot />
+  <LayoutFooter />
 </template>

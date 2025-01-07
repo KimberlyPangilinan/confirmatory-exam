@@ -1,4 +1,14 @@
-<script setup lang="ts"></script>
+<script setup>
+defineProps({
+  products: Object,
+});
+</script>
 <template>
-  <div>Product List</div>
+  <div class="flex flex-wrap justify-between gap-2">
+    <ProductItem
+      v-for="(product, key) in products"
+      :key="key"
+      :product="product"
+    />
+  </div>
 </template>

@@ -15,5 +15,5 @@ export default defineNuxtConfig({
     typeCheck: true,
   },
 
-  modules: ["nuxt-auth-utils", "@pinia/nuxt", "@nuxt/eslint"],
+  modules: ["nuxt-auth-utils", "@pinia/nuxt", "@nuxt/eslint", "@nuxt/icon"],
 });

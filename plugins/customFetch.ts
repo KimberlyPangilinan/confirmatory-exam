@@ -3,7 +3,7 @@ export default defineNuxtPlugin(() => {
   const config = useRuntimeConfig();
 
   const $customFetch = $fetch.create({
-    baseURL: "https://api.nuxt.com",
+    baseURL: "https://api.escuelajs.co/api/v1",
     onRequest({ request, options, error }) {
       if (userAuth.value) {
         // Add Authorization header
@@ -15,7 +15,7 @@ export default defineNuxtPlugin(() => {
     },
     onResponseError({ response }): any {
       if (response.status === 401) {
-        return navigateTo("/login");
+        return navigateTo("/");
       }
     },
   });

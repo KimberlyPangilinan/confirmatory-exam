@@ -34,7 +34,7 @@ const handleSubmitLogin = async () => {
     ></div>
     <form
       @submit.prevent="handleSubmitLogin"
-      class="z-10 min-h-[70vh] min-w-[36vw] space-y-10 rounded-lg bg-white p-6"
+      class="z-10 min-h-[70vh] min-w-[36vw] space-y-10 rounded-xl bg-white p-6"
     >
       <header>
         <img src="../public/images/Logo.png" class="w-20" />

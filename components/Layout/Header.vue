@@ -53,12 +53,14 @@ const { cart } = storeToRefs(useCart);
         >Login</BaseFormButton
       >
     </div>
-    <Login
-      v-if="isLoginModalOpen"
-      @closeModal="
-        isLoginModalOpen = false;
-        error = null;
-      "
-    />
+    <Teleport to="#teleports">
+      <Login
+        v-if="isLoginModalOpen"
+        @closeModal="
+          isLoginModalOpen = false;
+          error = null;
+        "
+      />
+    </Teleport>
   </header>
 </template>

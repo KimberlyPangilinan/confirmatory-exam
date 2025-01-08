@@ -10,5 +10,13 @@ export const useCartStore = defineStore("cart", () => {
     cartItem && cart.value.unshift(cartItem);
     console.log(cart.value, "cart");
   };
-  return { cart: skipHydrate(cart), fetch, add };
+
+  const total = computed(() => {
+    return cart.value.reduce(
+      (accumulator, currentValue) =>
+        accumulator + currentValue.price * currentValue.quantity,
+      0,
+    );
+  });
+  return { cart: skipHydrate(cart), fetch, add, total: skipHydrate(total) };
 });

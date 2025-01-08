@@ -2,7 +2,14 @@
 <template>
   <!-- Promotion Section -->
   <BaseSection>
-    <BaseCard></BaseCard>
+    <div
+      class="flex min-h-[42vh] max-w-[100vw] flex-nowrap gap-4 overflow-scroll"
+    >
+      <BaseCard img="/images/Logo.png" title="Top" class="min-w-[70vw]" />
+      <BaseCard img="/images/Logo.png" title="Top" />
+      <BaseCard img="/images/Logo.png" title="Top" />
+      <BaseCard img="/images/Logo.png" title="Top" />
+    </div>
   </BaseSection>
   <!-- Category Section -->
   <BaseSection>

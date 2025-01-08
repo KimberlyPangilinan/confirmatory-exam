@@ -1,13 +1,29 @@
-<script setup>
-import { useAuth } from "~/store/useAuth";
+<script setup lang="ts">
+import { useAuthStore } from "~/store/Auth";
+import type { AuthState } from "~/types/Auth";
+
+const useAuth = useAuthStore();
+
+const emit = defineEmits(["closeModal"]);
+
 const credentials = ref({
   email: "",
   password: "",
 });
 
-const emit = defineEmits(["closeModal"]);
+const { data, status, error, execute } = await useAsyncData(
+  () => useAuth.signIn(credentials.value),
+  { immediate: false },
+);
 
-const auth = useAuth();
+const handleSubmitLogin = async () => {
+  await execute();
+  useAuth.setToken(data.value);
+  const res: AuthState | null = data.value;
+  console.log(res && res.access_token, "access");
+  res?.access_token && useAuth.fetchProfile(res.access_token);
+  status.value == "success" && emit("closeModal");
+};
 </script>
 <template>
   <div class="fixed inset-0 z-50 flex items-center justify-center">
@@ -17,32 +33,34 @@ const auth = useAuth();
       class="fixed inset-0 bg-black opacity-50"
     ></div>
     <form
-      @submit.prevent="auth.login(credentials)"
+      @submit.prevent="handleSubmitLogin"
       class="z-10 min-h-[70vh] min-w-[36vw] space-y-10 rounded-lg bg-white p-6"
     >
       <header>
         <img src="../public/images/Logo.png" class="w-20" />
-        <h1 class="text-2xl font-semibold">Bonjour!</h1>
+        <h1>Bonjour!</h1>
         <p class="text-neutral-700">Login to continue</p>
       </header>
       <div class="flex flex-col gap-2">
-        <!-- TODO: create input component -->
-        <input
-          class="rounded-lg border bg-slate-50 p-4 outline-none"
+        <BaseFormInput
+          label="Email Address"
           v-model="credentials.email"
           placeholder="Email"
         />
-        <input
-          class="rounded-lg border bg-slate-50 p-4 outline-none"
+        <BaseFormInput
+          label="Password"
           v-model="credentials.password"
           type="password"
           placeholder="Password"
         />
       </div>
+      <span class="text-sm text-primary">{{ error || useAuth.error }}</span>
       <div class="flex flex-col gap-1 font-semibold">
-        <BaseFormButton class="btn-primary rounded-xl py-4"
-          >Login</BaseFormButton
-        >
+        <BaseFormButton
+          :loading="status == 'pending'"
+          class="btn-primary rounded-xl py-4"
+          >Login
+        </BaseFormButton>
         <BaseFormButton class="btn-secondary">Login as Guest</BaseFormButton>
       </div>
 

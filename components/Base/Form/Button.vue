@@ -19,11 +19,12 @@ const emit = defineEmits(["handleClick"]);
 <template>
   <button
     @click="to ? navigateTo(to) : emit('handleClick')"
-    :class="class"
-    class="w-full"
+    :class="[{ 'animate-pulse': loading }, props.class]"
+    class="w-full disabled:opacity-50"
     :disabled="disabled || loading"
     :loading="loading"
   >
-    <slot />
+    <span v-if="loading">Loading...</span>
+    <slot v-else />
   </button>
 </template>

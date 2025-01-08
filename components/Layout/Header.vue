@@ -1,10 +1,12 @@
-<script setup>
-import { useAuth } from "~/store/useAuth";
+<script setup lang="ts">
+import { useAuthStore } from "~/store/Auth";
+import { useCartStore } from "~/store/Cart";
 
 const isLoginModalOpen = ref(false);
-const authStorage = useAuth();
-const { token, auth } = storeToRefs(authStorage);
-// const { data, status, error } = useCustomFetch('/auth/profile')
+const useAuth = useAuthStore();
+const useCart = useCartStore();
+const { auth, error } = storeToRefs(useAuth);
+const { cart } = storeToRefs(useCart);
 </script>
 <template>
   <header
@@ -13,23 +15,36 @@ const { token, auth } = storeToRefs(authStorage);
     <img src="/images/Logo Inverted.png" class="w-[67px]" />
     <div class="flex items-center justify-center gap-4">
       <nav class="flex gap-4 text-sm text-white">
-        <NuxtLink to="/products" class="whitespace-nowrap">Order Now</NuxtLink>
-        <NuxtLink to="/" class="whitespace-nowrap">Store Locator</NuxtLink>
-        <NuxtLink class="whitespace-nowrap">FAQs</NuxtLink>
-        <div class="flex gap-2">
+        <NuxtLink
+          to="/products"
+          class="cursor-pointer whitespace-nowrap hover:font-bold"
+          >Order Now</NuxtLink
+        >
+        <NuxtLink
+          to="/"
+          class="cursor-pointer whitespace-nowrap hover:font-bold"
+          >Store Locator</NuxtLink
+        >
+        <NuxtLink class="cursor-pointer whitespace-nowrap hover:font-bold"
+          >FAQs</NuxtLink
+        >
+        <NuxtLink to="/order" class="flex cursor-pointer gap-2 hover:font-bold">
           <Icon name="bx:bxs-shopping-bag-alt" class="w-7" size="1.75rem" />
           <div
-            class="notification flex h-7 w-7 items-center justify-center rounded-full bg-white font-bold text-primary"
+            class="notification flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white font-bold text-primary"
           >
-            0
+            {{ cart ? cart.length : 0 }}
           </div>
-        </div>
+        </NuxtLink>
       </nav>
+
       <span
+        :title="'Logout'"
         v-if="auth"
-        @handleClick="isLoginModalOpen = true"
-        class="text-white"
-        >{{ token.slice(0, 6) }} dd
+        @click="useAuth.logout"
+        class="cursor-pointer text-white hover:font-bold"
+      >
+        {{ auth.user?.name }}
       </span>
       <BaseFormButton
         v-else
@@ -38,6 +53,12 @@ const { token, auth } = storeToRefs(authStorage);
         >Login</BaseFormButton
       >
     </div>
-    <Login v-if="isLoginModalOpen" @closeModal="isLoginModalOpen = false" />
+    <Login
+      v-if="isLoginModalOpen"
+      @closeModal="
+        isLoginModalOpen = false;
+        error = null;
+      "
+    />
   </header>
 </template>

@@ -1,4 +1,6 @@
 <script setup lang="ts"></script>
 <template>
-  <div>Checkout Page</div>
+  <BaseSection>
+    <template #header>Checkout</template>
+  </BaseSection>
 </template>

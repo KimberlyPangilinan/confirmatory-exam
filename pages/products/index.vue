@@ -1,14 +1,19 @@
-<script setup>
-import { useProducts } from "~/store/useProducts";
-// const {data } = useCustomFetch('/products')
-const category = ref(null);
-const { data: categories } = useCustomFetch("/categories");
-const productStorage = useProducts();
-const { data, status, execute } = useAsyncData("products", () =>
-  productStorage.fetch(category.value ? `categoryId=${category.value}` : ""),
+<script setup lang="ts">
+import { useProductStore } from "~/store/Product";
+import type { CategoryType } from "~/types/Category";
+import type { ProductState, ProductType } from "~/types/Product";
+
+const category = ref<number | null>(null);
+
+const productStore = useProductStore();
+
+const { data: categories } = useCustomFetch<CategoryType[]>("/categories");
+
+const { data, status, execute } = useAsyncData<ProductState[]>("products", () =>
+  productStore.fetch(category.value ? `categoryId=${category.value}` : "", {}),
 );
 
-const filterCategory = (id) => {
+const filterCategory = (id: number) => {
   category.value = id;
   execute();
 };
@@ -28,13 +33,14 @@ const filterCategory = (id) => {
           All
         </div>
         <div
+          v-if="categories"
           v-for="(item, key) in categories.slice(0, 5)"
+          :key="key"
           class="cursor-pointer whitespace-nowrap rounded-2xl p-4 font-semibold hover:opacity-80"
           :class="{
             'bg-primary text-white': category == item.id,
             'bg-secondary text-neutral-600': category !== item.id,
           }"
-          key="key"
           @click="filterCategory(item.id)"
         >
           {{ item.name }}
@@ -42,6 +48,7 @@ const filterCategory = (id) => {
       </div>
       <input type="text" placeholder="Enter search" />
     </div>
-    <ProductList v-if="data" :products="data" />
+    <BaseLoaderSkeleton v-if="status == 'pending'" />
+    <ProductList v-if="data && status == 'success'" :products="data" />
   </main>
 </template>

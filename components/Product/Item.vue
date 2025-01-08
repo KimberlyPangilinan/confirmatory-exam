@@ -4,13 +4,17 @@ defineProps({
 });
 </script>
 <template>
-  <div class="w-[15.5vw] rounded-lg bg-secondary px-4 py-4">
+  <div
+    v-if="product"
+    @click="navigateTo(`/products/${product.id}`)"
+    class="w-[15.5vw] rounded-lg bg-secondary px-4 py-4"
+  >
     <div>
       <img v-if="product" :src="product.images[0]" />
     </div>
-    <div>
+    <div class="mt-2">
       <h3 class="flex flex-col text-lg font-semibold">
-        Steak Fries Veggies
+        {{ product.title }}
         <span class="text-sm font-normal">Meat</span>
       </h3>
       <div class="mt-2 flex justify-between">

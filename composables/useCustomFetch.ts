@@ -4,7 +4,7 @@ export function useCustomFetch<T>(
   url: string | (() => string),
   options: UseFetchOptions<T> = {},
 ) {
-  return useFetch(url, {
+  return useLazyFetch(url, {
     ...options,
     $fetch: useNuxtApp().$customFetch,
   });

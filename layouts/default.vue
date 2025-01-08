@@ -1,6 +1,8 @@
 <script setup></script>
 <template>
   <LayoutHeader />
-  <slot />
+  <main class="p-8">
+    <slot />
+  </main>
   <LayoutFooter />
 </template>

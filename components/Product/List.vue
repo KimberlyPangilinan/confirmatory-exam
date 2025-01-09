@@ -3,8 +3,9 @@ defineProps({
   products: Object,
 });
 </script>
+
 <template>
-  <div class="flex flex-wrap justify-between gap-2">
+  <div class="grid grid-cols-6 gap-4">
     <ProductItem
       v-for="(product, key) in products"
       :key="key"

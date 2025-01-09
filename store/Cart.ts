@@ -3,12 +3,31 @@ import type { CartItemType, CartState } from "~/types/Cart";
 import { skipHydrate } from "pinia";
 export const useCartStore = defineStore("cart", () => {
   const cart = useCookie<CartItemType[]>("cart");
-  const add = async (cartItem: CartItemType) => {
-    // console.log("cartitme",cartItem )
 
-    !cart.value ? (cart.value = []) : cart.value;
+  const initializedCart = () => {
+    if (!cart.value) {
+      cart.value = [];
+    }
+  };
+  const add = async (cartItem: CartItemType) => {
+    // TODO: if existing, add item quantity
+    initializedCart();
     cartItem && cart.value.unshift(cartItem);
-    console.log(cart.value, "cart");
+  };
+
+  const removeItem = async (cartItem: CartItemType) => {
+    initializedCart();
+    cart.value = cart.value.filter((item) => item.id !== cartItem.id);
+  };
+
+  const clearCart = async () => {
+    cart.value = [];
+  };
+  const validate = async (body: Object) => {
+    return await $fetch("/api/checkout/validate", {
+      method: "POST",
+      body: body,
+    });
   };
 
   const total = computed(() => {
@@ -18,5 +37,14 @@ export const useCartStore = defineStore("cart", () => {
       0,
     );
   });
-  return { cart: skipHydrate(cart), fetch, add, total: skipHydrate(total) };
+
+  return {
+    cart: skipHydrate(cart),
+    fetch,
+    add,
+    total: skipHydrate(total),
+    validate,
+    removeItem,
+    clearCart,
+  };
 });

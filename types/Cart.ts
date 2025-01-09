@@ -1,7 +1,7 @@
 export interface CartItemType {
   id: number;
   productID: number;
-  userID: number;
+  userId: number;
   productName: string;
   image: string;
   price: number;
@@ -11,6 +11,4 @@ export interface CartItemType {
 
 export interface CartState {
   cart: CartItemType[];
-  // checkoutStatus: string;
-  // isLoading: boolean;
 }

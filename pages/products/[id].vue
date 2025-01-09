@@ -2,7 +2,7 @@
 import { useCartStore } from "~/store/Cart";
 import type { CartItemType } from "~/types/Cart";
 import type { ProductType } from "~/types/Product";
-
+const { $formatCurrency } = useNuxtApp();
 const route = useRoute();
 const useCart = useCartStore();
 
@@ -16,10 +16,10 @@ const cartItem = ref<CartItemType>({
   productID: 0,
   productName: "",
   image: "",
-  userID: 0,
+  userId: 0,
   price: 0,
-  quantity: 0,
-  total: 1200,
+  quantity: 1,
+  total: 0,
 });
 
 const handleAddToCart = () => {
@@ -29,17 +29,18 @@ const handleAddToCart = () => {
       productID: data.value?.id,
       productName: data.value.title,
       image: data.value.images[0],
-      userID: 1,
+      userId: 1,
       price: data.value.price,
       quantity: cartItem.value.quantity,
       total: cartItem.value.price * cartItem.value.quantity,
     };
   }
+
   useCart.add(cartItem.value);
 };
 </script>
 <template>
-  <ProductDetails v-if="data" :product="data">
+  <LazyProductDetails v-if="data" :product="data">
     <div class="my-6 space-y-6">
       <div v-if="data.category?.name == 'Food'" class="space-y-2">
         <h3 class="font-bold">Choose Beverage</h3>
@@ -69,7 +70,9 @@ const handleAddToCart = () => {
       </div>
     </div>
     <BaseFormButton @handleClick="handleAddToCart" class="btn-primary py-4"
-      >Add to Bag (P295)</BaseFormButton
+      >Add to Bag ({{
+        $formatCurrency(data.price * cartItem.quantity, "PHP")
+      }})</BaseFormButton
     >
-  </ProductDetails>
+  </LazyProductDetails>
 </template>

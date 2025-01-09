@@ -12,7 +12,9 @@ const { cart } = storeToRefs(useCart);
   <header
     class="flex h-[111px] items-center justify-between rounded-b-lg bg-primary px-[49px] py-[10px]"
   >
-    <img src="/images/Logo Inverted.png" class="w-[67px]" />
+    <NuxtLink to="/"
+      ><img src="/images/Logo Inverted.png" class="w-[67px]"
+    /></NuxtLink>
     <div class="flex items-center justify-center gap-4">
       <nav class="flex gap-4 text-sm text-white">
         <NuxtLink

@@ -9,10 +9,9 @@ export const useProductStore = defineStore("product", () => {
     query: string,
     options: Object,
   ): Promise<ProductState[]> => {
-    return await $fetch(
-      `https://api.escuelajs.co/api/v1/products?${query}`,
-      options,
-    );
+    // TODO: use api endpoint default
+    const endpoint = `https://api.escuelajs.co/api/v1/products?${query}`;
+    return await $fetch(endpoint, options);
   };
 
   return {

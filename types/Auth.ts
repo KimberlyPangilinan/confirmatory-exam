@@ -2,6 +2,9 @@ export interface AuthType {
   id: number;
   name: string;
   email: string;
+  homeAddress?: string;
+  workAddress?: string;
+  phone?: string;
   access_token?: string;
 }
 

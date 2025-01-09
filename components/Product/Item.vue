@@ -7,9 +7,9 @@ defineProps({
   <div
     v-if="product"
     @click="navigateTo(`/products/${product.id}`)"
-    class="w-[15.5vw] rounded-xl bg-secondary px-4 py-4"
+    class="rounded-xl bg-secondary px-4 py-4"
   >
-    <div>
+    <div class="min-h-[10em]">
       <img v-if="product" :src="product.images[0]" />
     </div>
     <div class="mt-2">

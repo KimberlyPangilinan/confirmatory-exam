@@ -9,12 +9,12 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="flex h-screen w-full flex-row flex-wrap gap-2">
+  <div class="grid grid-cols-6 gap-4">
     <!-- Skeleton Loader Items -->
     <div
       v-for="i in length"
       :key="i"
-      class="h-[40vh] w-[15.5vw] animate-pulse rounded-md bg-neutral-100"
+      class="h-[40vh] animate-pulse rounded-md bg-neutral-100"
     ></div>
   </div>
 </template>

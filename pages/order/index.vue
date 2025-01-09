@@ -1,10 +1,30 @@
 <script setup lang="ts">
 import { useCartStore } from "~/store/Cart";
-import { useAuthStore } from "~/store/Auth";
-const useCart = useCartStore();
-const useAuth = useAuthStore();
+import type { CartItemType } from "~/types/Cart";
+
 const isLoginModalOpen = ref<boolean>();
-const { auth } = storeToRefs(useAuth);
+const isRemoving = ref(false);
+const currentItem = ref();
+
+const useCart = useCartStore();
+
+const updateQuantity = (cartItem: CartItemType, increment = true) => {
+  currentItem.value = cartItem;
+  if (increment) {
+    cartItem.quantity++;
+  } else {
+    if (cartItem.quantity <= 1) {
+      isRemoving.value = true;
+      return;
+    }
+    cartItem.quantity--;
+  }
+};
+
+const removeItem = () => {
+  useCart.removeItem(currentItem.value);
+  isRemoving.value = false;
+};
 </script>
 <template>
   <BaseSection>
@@ -17,7 +37,7 @@ const { auth } = storeToRefs(useAuth);
       </div>
     </template>
 
-    <div class="flex justify-between gap-4">
+    <div v-if="useCart.cart.length" class="flex justify-between gap-4">
       <div class="flex w-2/3 flex-col gap-4">
         <div
           v-for="item in useCart.cart"
@@ -37,13 +57,13 @@ const { auth } = storeToRefs(useAuth);
               <div class="inline-flex items-center font-semibold">
                 <BaseFormButton
                   class="rounded-none rounded-l-md bg-neutral-50 text-black"
-                  @click="item.quantity--"
+                  @click="updateQuantity(item, false)"
                   >-
                 </BaseFormButton>
                 <span class="bg-neutral-50 px-6 py-2">{{ item.quantity }}</span>
                 <BaseFormButton
                   class="rounded-none rounded-r-md bg-neutral-50 text-black"
-                  @click="item.quantity++"
+                  @click="updateQuantity(item, true)"
                   >+
                 </BaseFormButton>
               </div>
@@ -51,46 +71,42 @@ const { auth } = storeToRefs(useAuth);
           </div>
         </div>
       </div>
-      <div
-        class="flex max-h-[30rem] flex-1 flex-col justify-between gap-6 rounded-xl bg-secondary p-6 text-sm"
-      >
-        <div class="flex justify-between">
-          <h3 class="font-bold">Summary</h3>
-          <span class="font-normal leading-[18.2px] text-neutral-600">
-            ({{ 3 }} items)
-          </span>
-        </div>
-        <div>
-          <ul class="space-y-2">
-            <li class="flex justify-between">
-              <span class="font-normal">Subtotal:</span>
-              <span class="font-semibold">P 120.00</span>
-            </li>
-            <li class="flex justify-between">
-              <span class="font-normal">Shipping:</span>
-              <span class="font-semibold">Calculated at checkout</span>
-            </li>
-            <hr class="my-4" />
-            <li class="flex justify-between">
-              <span class="font-normal">Total:</span>
-              <span class="font-semibold">P 120.00</span>
-            </li>
-          </ul>
-        </div>
-        <div class="flex flex-col gap-1 pt-6">
-          <BaseFormButton
-            @handleClick="
-              auth ? navigateTo('/order/checkout') : (isLoginModalOpen = true)
-            "
-            >Checkout</BaseFormButton
-          >
-          <BaseFormButton to="/products" class="bg-secondary text-neutral-600"
-            >Return to Shopping</BaseFormButton
-          >
-        </div>
-      </div>
+      <OrderSummary :step="1" />
+    </div>
+    <div
+      class="flex h-[60vh] w-full flex-col items-center justify-center gap-2"
+    >
+      <img src="/images/cart.png" class="w-40" />
+      <h2 class="mt-2 text-2xl">Your Cart is empty</h2>
+      <p class="w-[50vh] text-center text-neutral-400">
+        Looks like you have not yed added any in your cart. Go ahead and
+        <NuxtLink
+          to="/products"
+          class="cursor-pointer font-bold text-primary hover:underline"
+          >explore</NuxtLink
+        >
+        popular products
+      </p>
     </div>
   </BaseSection>
+  <BaseModal
+    @closeModal="isRemoving = false"
+    :modalVisible="isRemoving"
+    size="w-[30vw]"
+  >
+    <template #header><h2>Removing item</h2></template>
+    <template #default
+      ><p class="pb-4">Are you sure to remove the item?</p></template
+    >
+    <template #footer>
+      <BaseFormButton @click="removeItem()">Remove</BaseFormButton>
+      <BaseFormButton
+        class="btn-secondary bg-secondary text-neutral-600"
+        @click="isRemoving = false"
+        >Cancel</BaseFormButton
+      >
+    </template>
+  </BaseModal>
   <Teleport to="#teleports">
     <Login v-if="isLoginModalOpen" @closeModal="isLoginModalOpen = false" />
   </Teleport>

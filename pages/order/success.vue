@@ -15,7 +15,7 @@ definePageMeta({
         notification regarding your order.
       </p>
       <div class="flex w-full flex-col gap-1">
-        <BaseFormButton to="/order">Track Order</BaseFormButton>
+        <BaseFormButton to="/order/all">Track Order</BaseFormButton>
         <BaseFormButton to="/" class="btn-secondary"
           >Back to Home</BaseFormButton
         >

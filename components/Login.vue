@@ -23,6 +23,7 @@ const handleSubmitLogin = async () => {
   console.log(res && res.access_token, "access");
   res?.access_token && useAuth.fetchProfile(res.access_token);
   status.value == "success" && emit("closeModal");
+  return;
 };
 </script>
 <template>
@@ -45,6 +46,7 @@ const handleSubmitLogin = async () => {
         <BaseFormInput
           label="Email Address"
           v-model="credentials.email"
+          type="email"
           placeholder="Email"
         />
         <BaseFormInput

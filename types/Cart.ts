@@ -11,4 +11,6 @@ export interface CartItemType {
 
 export interface CartState {
   cart: CartItemType[];
+  id: number;
+  userId: number;
 }

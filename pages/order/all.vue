@@ -1,12 +1,11 @@
 <script setup>
-const { data } = useFetch("/api/orders");
-
-definePageMeta({
-  middleware: ["authenticated"],
-});
+import { useAuthStore } from "~/store/Auth";
+const { data, status } = useLazyFetch("/api/orders");
+const useAuth = useAuthStore();
 </script>
 <template>
-  <BaseSection>
+  <Loader v-if="!useAuth.auth || status == 'pending'" />
+  <BaseSection v-else>
     <template #header>My Orders</template>
     <div class="relative overflow-x-auto">
       <table

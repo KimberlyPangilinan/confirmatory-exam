@@ -25,11 +25,21 @@ export default defineEventHandler(async (event) => {
       data: body,
     };
   } catch (error: any) {
-    // Handle validation errors
+    let message = "Error";
+    let errorData = null;
+    if (error.statusCode === 400) {
+      // Assuming Zod is used for validation
+      message = "Validation Error";
+      errorData = error.data || "Invalid input data";
+    } else {
+      // statusCode = error.statusCode || 500;
+      message = error.message || "An unexpected error occurred";
+      errorData = error.data || {};
+    }
     throw createError({
-      statusCode: 400,
-      message: error,
-      data: error.data,
+      statusCode: error.statusCode || 500,
+      message,
+      data: errorData,
     });
   }
 });

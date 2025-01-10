@@ -32,7 +32,8 @@ const {
 
 const {
   data: checkout,
-  error: e,
+  status: processStatus,
+  error: processError,
   execute: handleProcess,
 } = useAsyncData(
   "checkout",
@@ -49,7 +50,8 @@ const {
 
 const {
   data: order,
-  error: errorOrder,
+  status: orderStatus,
+  error: orderError,
   execute: handleOrder,
 } = useAsyncData("order", () => useCheckout.checkout(checkoutForm.value), {
   immediate: false,
@@ -98,19 +100,33 @@ watch(order, () => {
         </li>
       </ul>
     </div>
+
+    <!-- TODO: return validation messages  -->
     <span class="text-primary" v-if="step == 1">{{ error && error.data }}</span>
-    <span class="text-primary" v-if="step == 2">{{ e && e.data }}</span>
+    <span class="text-primary" v-if="step == 2">{{
+      processError && processError.message
+    }}</span>
+    <span class="text-primary" v-if="checkout">{{
+      orderError && orderError.data
+    }}</span>
+
     <div class="flex flex-col gap-1 pt-6">
       <BaseFormButton
-        :loading="status == 'pending'"
         v-if="step == 1"
+        :loading="status == 'pending'"
         @handleClick="auth ? validate() : (isLoginModalOpen = true)"
         >Continue</BaseFormButton
       >
-      <BaseFormButton v-if="step == 2" @handleClick="handleProcess"
+      <BaseFormButton
+        v-if="step == 2"
+        :loading="processStatus == 'pending'"
+        @handleClick="handleProcess"
         >Checkout</BaseFormButton
       >
-      <BaseFormButton v-if="checkout" @handleClick="handleOrder"
+      <BaseFormButton
+        v-if="checkout"
+        :loading="orderStatus == 'pending'"
+        @handleClick="handleOrder"
         >Submit Order</BaseFormButton
       >
       <BaseFormButton to="/products" class="bg-secondary text-neutral-600"

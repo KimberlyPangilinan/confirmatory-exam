@@ -5,6 +5,7 @@ export interface AuthType {
   homeAddress?: string;
   workAddress?: string;
   phone?: string;
+  avatar?: string;
   access_token?: string;
 }
 

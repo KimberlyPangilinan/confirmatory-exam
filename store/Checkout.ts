@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
+import { z } from "zod";
 
 export const useCheckoutStore = defineStore("checkout", () => {
   const checkoutForm = ref();
-  // const checkoutDetails = useCookie('checkedOutInfo')
+
   const checkout = async (body: Object) => {
     return await $fetch("/api/orders", {
       method: "POST",
@@ -16,6 +17,7 @@ export const useCheckoutStore = defineStore("checkout", () => {
       body: body,
     });
   };
+
   const validate = async (body: Object) => {
     return await $fetch("/api/checkout/validate", {
       method: "POST",

@@ -3,7 +3,7 @@ import { useProductStore } from "~/store/Product";
 import type { ProductState, ProductType } from "~/types/Product";
 import type { CategoryType } from "~/types/Category";
 const productStore = useProductStore();
-const { data, status, execute } = useAsyncData<ProductState[]>("products", () =>
+const { data, status, execute } = useAsyncData<ProductType[]>("products", () =>
   productStore.fetch("", {}),
 );
 const { data: categories } = useCustomFetch<CategoryType[]>("/categories");

@@ -10,9 +10,19 @@ export const useCartStore = defineStore("cart", () => {
     }
   };
   const add = async (cartItem: CartItemType) => {
-    // TODO: if existing, add item quantity
     initializedCart();
-    cartItem && cart.value.unshift(cartItem);
+    console.log("hi");
+    if (cartItem) {
+      const existingItem = cart.value.find(
+        (item) => item.productID === cartItem.productID,
+      );
+      if (existingItem) {
+        console.log("hello");
+        existingItem.quantity += cartItem.quantity || 1;
+      }
+      cart.value.unshift({ ...cartItem, quantity: cartItem.quantity || 1 });
+      console.log("bye");
+    }
   };
 
   const removeItem = async (cartItem: CartItemType) => {
@@ -23,6 +33,8 @@ export const useCartStore = defineStore("cart", () => {
   const clearCart = async () => {
     cart.value = [];
   };
+
+  // TODO: use checkout store validate
   const validate = async (body: Object) => {
     return await $fetch("/api/checkout/validate", {
       method: "POST",

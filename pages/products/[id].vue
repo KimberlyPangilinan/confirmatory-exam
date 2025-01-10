@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { toast } from "vue3-toastify";
 import { useCartStore } from "~/store/Cart";
 import type { CartItemType } from "~/types/Cart";
 import type { ProductType } from "~/types/Product";
@@ -7,9 +8,12 @@ const route = useRoute();
 const useCart = useCartStore();
 
 const { cart } = storeToRefs(useCart);
-const { data } = useCustomFetch<ProductType>(`/products/${route.params.id}`, {
-  lazy: true,
-});
+const { data, status } = useCustomFetch<ProductType>(
+  `/products/${route.params.id}`,
+  {
+    lazy: true,
+  },
+);
 
 const cartItem = ref<CartItemType>({
   id: 0,
@@ -37,10 +41,21 @@ const handleAddToCart = () => {
   }
 
   useCart.add(cartItem.value);
+  toast("Added to cart", {
+    autoClose: 1000,
+    type: "success",
+    closeOnClick: false,
+    pauseOnHover: false,
+  });
 };
 </script>
 <template>
-  <LazyProductDetails v-if="data" :product="data">
+  <div
+    v-if="status == 'pending'"
+    class="m-auto h-screen w-[80vw] animate-pulse rounded-md bg-neutral-100"
+  ></div>
+
+  <LazyProductDetails v-if="status == 'success' && data" :product="data">
     <div class="my-6 space-y-6">
       <div v-if="data.category?.name == 'Food'" class="space-y-2">
         <h3 class="font-bold">Choose Beverage</h3>

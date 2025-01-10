@@ -1,5 +1,9 @@
 <script setup>
 const { data } = useFetch("/api/orders");
+
+definePageMeta({
+  middleware: ["authenticated"],
+});
 </script>
 <template>
   <BaseSection>

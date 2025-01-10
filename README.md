@@ -1,75 +1,35 @@
-# Nuxt Minimal Starter
+# Fast Food - Confirmatory Exam
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+## Introduction
 
-## Setup
+This documentation will guide you through installing and setting up the full stack fast food application.
 
-Make sure to install dependencies:
+# Table of Contents
 
-```bash
-# npm
-npm install
+1. [Introduction](#introduction)
+2. [Prerequisites](#prerequisites)
+3. [Installation](#installation)
+<!-- 4. [Folder Structure](#folder-structure) -->
 
-# pnpm
-pnpm install
+## Prerequisites
 
-# yarn
-yarn install
+Ensure you have the following installed on your system:
 
-# bun
-bun install
-```
+- **Node.js**
+- **npm**
 
-## Development Server
+## Installation
 
-Start the development server on `http://localhost:3000`:
+Follow the steps below to install the application:
 
-```bash
-# npm
-npm run dev
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/KimberlyPangilinan/confirmatory-exam.git
+   ```
+2. **Navigate to the project directory:**:
 
-# pnpm
-pnpm dev
+   ```bash
+   npm install
+   ```
 
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+3. Run `npm run dev`

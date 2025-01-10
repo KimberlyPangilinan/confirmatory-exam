@@ -4,6 +4,7 @@ import type { CartItemType } from "~/types/Cart";
 
 const isLoginModalOpen = ref<boolean>();
 const isRemoving = ref(false);
+const isRemovingAll = ref(false);
 const currentItem = ref();
 
 const useCart = useCartStore();
@@ -21,6 +22,10 @@ const updateQuantity = (cartItem: CartItemType, increment = true) => {
   }
 };
 
+const removeAllItems = () => {
+  useCart.clearCart();
+  isRemovingAll.value = false;
+};
 const removeItem = () => {
   useCart.removeItem(currentItem.value);
   isRemoving.value = false;
@@ -29,11 +34,24 @@ const removeItem = () => {
 <template>
   <BaseSection>
     <template #header>
-      My Cart
-      <div class="mt-4 block space-x-2 text-xs font-semibold text-neutral-400">
-        <NuxtLink to="/">Home</NuxtLink>
-        <span> > </span>
-        <NuxtLink>My Cart</NuxtLink>
+      <div class="flex items-start justify-between">
+        <div>
+          My Cart
+          <div
+            class="mt-4 block space-x-2 text-sm font-semibold text-neutral-400"
+          >
+            <NuxtLink to="/">Home</NuxtLink>
+            <span> > </span>
+            <NuxtLink>My Cart</NuxtLink>
+          </div>
+        </div>
+        <button
+          v-if="useCart.cart.length"
+          @click="isRemovingAll = true"
+          class="cursor-pointer text-base font-semibold text-primary hover:underline"
+        >
+          Remove All
+        </button>
       </div>
     </template>
 
@@ -74,6 +92,7 @@ const removeItem = () => {
       <OrderSummary :step="1" />
     </div>
     <div
+      v-else
       class="flex h-[60vh] w-full flex-col items-center justify-center gap-2"
     >
       <img src="/images/cart.png" class="w-40" />
@@ -89,24 +108,46 @@ const removeItem = () => {
       </p>
     </div>
   </BaseSection>
-  <BaseModal
-    @closeModal="isRemoving = false"
-    :modalVisible="isRemoving"
-    size="w-[30vw]"
-  >
-    <template #header><h2>Removing item</h2></template>
-    <template #default
-      ><p class="pb-4">Are you sure to remove the item?</p></template
+  <Teleport to="#teleports">
+    <BaseModal
+      @closeModal="isRemovingAll = false"
+      :modalVisible="isRemovingAll"
+      size="w-[30vw]"
     >
-    <template #footer>
-      <BaseFormButton @click="removeItem()">Remove</BaseFormButton>
-      <BaseFormButton
-        class="btn-secondary bg-secondary text-neutral-600"
-        @click="isRemoving = false"
-        >Cancel</BaseFormButton
+      <template #header><h2>Removing all items</h2></template>
+      <template #default
+        ><p class="pb-4">Are you sure to remove all items?</p></template
       >
-    </template>
-  </BaseModal>
+      <template #footer>
+        <BaseFormButton @click="removeAllItems()">Remove</BaseFormButton>
+        <BaseFormButton
+          class="btn-secondary bg-secondary text-neutral-600"
+          @click="isRemovingAll = false"
+          >Cancel</BaseFormButton
+        >
+      </template>
+    </BaseModal>
+  </Teleport>
+  <Teleport to="#teleports">
+    <BaseModal
+      @closeModal="isRemoving = false"
+      :modalVisible="isRemoving"
+      size="w-[30vw]"
+    >
+      <template #header><h2>Removing item</h2></template>
+      <template #default
+        ><p class="pb-4">Are you sure to remove the item?</p></template
+      >
+      <template #footer>
+        <BaseFormButton @click="removeItem()">Remove</BaseFormButton>
+        <BaseFormButton
+          class="btn-secondary bg-secondary text-neutral-600"
+          @click="isRemoving = false"
+          >Cancel</BaseFormButton
+        >
+      </template>
+    </BaseModal>
+  </Teleport>
   <Teleport to="#teleports">
     <Login v-if="isLoginModalOpen" @closeModal="isLoginModalOpen = false" />
   </Teleport>

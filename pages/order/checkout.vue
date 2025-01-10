@@ -25,18 +25,17 @@ const { auth } = storeToRefs(useAuth);
   <BaseSection v-if="auth && auth.user">
     <template #header>
       My Cart
-      <div class="mt-4 block space-x-2 text-xs font-semibold text-neutral-400">
+      <div class="mt-4 block space-x-2 text-sm font-semibold text-neutral-400">
         <NuxtLink to="/">Home</NuxtLink>
         <span> > </span>
-        <NuxtLink>My Cart</NuxtLink>
+        <NuxtLink to="/order">My Cart</NuxtLink>
+        <span> > </span>
+        <NuxtLink>Checkout</NuxtLink>
       </div>
     </template>
     <div class="flex gap-6">
       <OrderForm class="w-2/3" />
       <OrderSummary :step="2" class="w-1/3" />
     </div>
-    <button @click="checkoutForm = { cartId: 1, userId: 1, date: new Date() }">
-      Add
-    </button>
   </BaseSection>
 </template>

@@ -34,9 +34,18 @@ const {
   data: checkout,
   error: e,
   execute: handleProcess,
-} = useAsyncData("checkout", () => useCheckout.process(checkoutForm.value), {
-  immediate: false,
-});
+} = useAsyncData(
+  "checkout",
+  () => {
+    return useCheckout.process({
+      ...checkoutForm.value,
+      changeFor: Number(checkoutForm.value.changeFor),
+    });
+  },
+  {
+    immediate: false,
+  },
+);
 
 const {
   data: order,
@@ -60,7 +69,7 @@ watch(order, () => {
 <template>
   <div
     v-if="useCart && useCart.cart"
-    class="flex max-h-[20rem] flex-1 flex-col justify-between gap-6 rounded-xl bg-secondary p-6 text-sm"
+    class="flex max-h-[24rem] flex-1 flex-col justify-between gap-6 rounded-xl bg-secondary p-6 text-sm"
   >
     <div class="flex justify-between">
       <h3 class="font-bold">Summary</h3>

@@ -20,13 +20,10 @@ const { auth } = storeToRefs(useAuth);
 <template>
   <div class="space-y-6">
     <div v-if="auth && auth.user" class="space-y-4">
-      <BaseCardSelect
-        v-model="checkoutForm.userId"
-        :value="String(auth.user.id)"
-      >
-        <template #header>
+      <BaseCardSelect>
+        <h3 class="text-sm font-bold capitalize text-black">
           {{ auth.user.name }}
-        </template>
+        </h3>
         <p class="w-[16em] text-sm text-neutral-500">
           +63 912 345 6789 <br />
           chou.tzu-yu@email.com

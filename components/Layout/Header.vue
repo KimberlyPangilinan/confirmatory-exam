@@ -16,7 +16,7 @@ const { cart } = storeToRefs(useCart);
       ><img src="/images/Logo Inverted.png" class="w-[67px]"
     /></NuxtLink>
     <div class="flex items-center justify-center gap-4">
-      <nav class="flex gap-4 text-sm text-white">
+      <nav class="flex gap-4 text-base text-white">
         <NuxtLink
           to="/products"
           class="cursor-pointer whitespace-nowrap hover:font-bold"
@@ -24,10 +24,11 @@ const { cart } = storeToRefs(useCart);
         >
         <NuxtLink
           to="/"
-          class="cursor-pointer whitespace-nowrap hover:font-bold"
+          class="hidden cursor-pointer whitespace-nowrap hover:font-bold md:flex"
           >Store Locator</NuxtLink
         >
-        <NuxtLink class="cursor-pointer whitespace-nowrap hover:font-bold"
+        <NuxtLink
+          class="hidden cursor-pointer whitespace-nowrap hover:font-bold md:flex"
           >FAQs</NuxtLink
         >
         <NuxtLink to="/order" class="flex cursor-pointer gap-2 hover:font-bold">
@@ -44,7 +45,7 @@ const { cart } = storeToRefs(useCart);
         :title="'Logout'"
         v-if="auth"
         @click="useAuth.logout"
-        class="cursor-pointer text-white hover:font-bold"
+        class="cursor-pointer capitalize text-white hover:font-bold"
       >
         {{ auth.user?.name }}
       </span>

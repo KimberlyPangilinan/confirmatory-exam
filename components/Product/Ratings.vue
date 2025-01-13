@@ -14,9 +14,6 @@ const activeStarsCount = computed(() => Math.floor(props.rating));
 const inactiveStarsCount = computed(() =>
   Math.floor(props.starsCount - props.rating),
 );
-const partialStarWidth = computed(
-  () => (props.rating - activeStarsCount.value).toFixed(2) * 100,
-);
 </script>
 
 <template>
@@ -29,16 +26,6 @@ const partialStarWidth = computed(
         name="material-symbols:star-rounded"
       />
 
-      <div v-if="partialStarWidth > 0" class="relative">
-        <star :is-active="false" />
-
-        <div
-          :style="{ width: `${partialStarWidth}%` }"
-          class="absolute inset-0 overflow-hidden"
-        >
-          <star :is-active="true" />
-        </div>
-      </div>
       <Icon
         class="bg-neutral-200"
         v-for="k in inactiveStarsCount"

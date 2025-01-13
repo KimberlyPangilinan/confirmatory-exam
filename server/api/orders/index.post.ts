@@ -1,3 +1,5 @@
+import type { Cart } from "~/types/Cart";
+
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
@@ -11,12 +13,16 @@ export default defineEventHandler(async (event) => {
     const ordersCookie = getCookie(event, "orders");
     const orders = ordersCookie ? JSON.parse(ordersCookie) : [];
 
-    const order = {
+    const order: Cart = {
       id: orders.length + 1,
       cart: body.cart,
       userId: body.userId,
       address: body.address,
-      delivery: body.delivery,
+      deliveryInstructions: body.deliveryInstructions,
+      deliveryMethod: body.deliveryMethod,
+      paymentMethod: body.paymentMethod,
+      changeFor: body.changeFor,
+      paymentDetails: body.paymentDetails,
       total: body.total,
       status: "pending",
       createdAt: new Date(),
@@ -40,3 +46,5 @@ export default defineEventHandler(async (event) => {
     });
   }
 });
+
+// "https://sandbox.paypal.com//cgi-bin/webscr?cmd=_xclick&amp;business=sb-qsjwi36682830@business.example.com&amp;currency_code=USD&amp;amount=20&amp;return=http://romanstwelve.com/contact-us&amp;item_name=Registration+Fee"

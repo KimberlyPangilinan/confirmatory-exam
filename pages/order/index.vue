@@ -46,7 +46,7 @@ const removeItem = () => {
           </div>
         </div>
         <button
-          v-if="cartStore.cart.length"
+          v-if="cartStore.cart && cartStore.cart.length"
           @click="isRemovingAll = true"
           class="cursor-pointer text-base font-semibold text-primary hover:underline"
         >
@@ -55,7 +55,10 @@ const removeItem = () => {
       </div>
     </template>
 
-    <div v-if="cartStore.cart.length" class="flex justify-between gap-4">
+    <div
+      v-if="cartStore.cart && cartStore.cart.length"
+      class="flex justify-between gap-4"
+    >
       <div class="flex w-2/3 flex-col gap-4">
         <div
           v-for="item in cartStore.cart"

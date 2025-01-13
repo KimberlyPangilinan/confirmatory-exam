@@ -15,6 +15,20 @@ const bodySchema = z.object({
   delivery: z.optional(z.string()),
   requestCutlery: z.optional(z.boolean()),
   total: z.number(),
+  paymentDetails: z
+    .object({
+      cardNumber: z.string(),
+      cardHolderName: z.string(),
+      expirationDate: z.string(),
+      cvv: z.string(),
+      billingDetails: z.object({
+        street: z.string(),
+        city: z.string(),
+        state: z.string(),
+        zipCode: z.string(),
+      }),
+    })
+    .optional(),
 });
 
 export default defineEventHandler(async (event) => {

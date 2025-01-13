@@ -1,21 +1,22 @@
 import { defineStore } from "pinia";
 import { type ProductState, type ProductType } from "~/types/Product";
-
 // TODO: add autoimport for store files and pinia functions
 
 export const useProductStore = defineStore("product", () => {
+  const { $customFetch } = useNuxtApp();
+
   const products = ref<ProductType[]>([]);
   const isLoading = ref<boolean>(false);
+  const isAscending = ref(false);
 
   // Fetch products
   const fetch = async (
     query: string,
     options: Object,
   ): Promise<ProductType[]> => {
-    const endpoint = `https://api.escuelajs.co/api/v1/products?${query}`;
-    return await $fetch(endpoint, options);
+    return await $customFetch(`products?${query}`, options);
   };
-  const isAscending = ref(false);
+
   function sortBy() {
     isAscending.value = !isAscending.value;
     products.value = [...products.value].sort((a, b) => {
@@ -33,6 +34,5 @@ export const useProductStore = defineStore("product", () => {
     isLoading,
     fetch,
     sortBy,
-    isAscending,
   };
 });

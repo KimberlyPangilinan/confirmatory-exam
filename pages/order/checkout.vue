@@ -1,25 +1,12 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/store/Auth";
-import { useCheckoutStore } from "~/store/Checkout";
-import { useCartStore } from "~/store/Cart";
 
 definePageMeta({
   middleware: ["authenticated"],
 });
 
-const cartStore = useCartStore();
-const authStore = useAuthStore();
-const useCheckout = useCheckoutStore();
-
-const { checkoutForm } = storeToRefs(useCheckout);
-checkoutForm.value = {
-  id: 1,
-  userId: 1,
-  cart: cartStore.cart || [],
-  changeFor: 0,
-};
-
-const { auth } = storeToRefs(authStore);
+const useAuth = useAuthStore();
+const { auth } = storeToRefs(useAuth);
 </script>
 <template>
   <BaseSection v-if="auth && auth.user">

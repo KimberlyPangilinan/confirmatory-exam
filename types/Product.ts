@@ -5,9 +5,9 @@ export interface ProductType {
   description: string;
   images: string[];
   category: any;
+  variations: any;
 }
 
 export interface ProductState {
   products: ProductType[];
-  isLoading: boolean;
 }

@@ -7,7 +7,7 @@ defineProps({
   <div
     v-if="product"
     @click="navigateTo(`/products/${product.id}`)"
-    class="flex cursor-pointer flex-col rounded-xl bg-secondary px-4 py-4 hover:border-2 hover:border-primary hover:bg-opacity-10"
+    class="z-1 flex cursor-pointer flex-col rounded-xl bg-secondary px-4 py-4 hover:border-2 hover:border-primary hover:bg-opacity-10"
   >
     <div class="min-h-[10em]">
       <img v-if="product" :src="product.images[0]" />

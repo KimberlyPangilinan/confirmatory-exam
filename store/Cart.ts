@@ -10,6 +10,7 @@ export const useCartStore = defineStore("cart", () => {
       cart.value = [];
     }
   };
+
   const add = async (cartItem: CartItemType) => {
     initializedCart();
     if (cartItem) {

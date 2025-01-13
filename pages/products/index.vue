@@ -28,13 +28,20 @@ onMounted(() => {
 <template>
   <main
     ref="scrollContainer"
-    class="relative m-auto max-h-[70vh] w-[90vw] space-y-6 overflow-auto py-4"
+    class="relative z-20 m-auto max-h-[70vh] w-[90vw] space-y-6 overflow-auto py-4"
   >
     <div
       class="sticky top-[-2rem] flex items-center justify-between bg-white py-4"
     >
-      <ProductCategory @filter="filterCategory" />
-      <button @click="useProductStore().sortBy">Sort by Price</button>
+      <div class="flex gap-4">
+        <ProductCategory @filter="filterCategory" />
+        <button
+          @click="useProductStore().sortBy"
+          class="cursor-pointer text-neutral-500"
+        >
+          Sort by Price
+        </button>
+      </div>
       <div
         class="flex items-center justify-center gap-2 rounded-xl border bg-neutral-50 p-4 placeholder:text-neutral-500 focus-within:border-2 focus-within:border-primary"
       >

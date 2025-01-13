@@ -25,6 +25,18 @@ checkoutForm.value = {
   paymentMethod: "CASH ON DELIVERY",
   deliveryMethod: "STANDARD",
   deliveryInstructions: "",
+  paymentDetails: {
+    cardNumber: "",
+    cardHolderName: "",
+    expirationDate: "",
+    cvv: "",
+    billingDetails: {
+      street: "",
+      city: "",
+      state: "",
+      zipCode: "",
+    },
+  },
 };
 
 const {
@@ -53,6 +65,34 @@ const {
 } = useAsyncData(
   "checkout",
   () => {
+    if (
+      checkoutForm.value &&
+      checkoutForm.value.paymentMethod === "CARD" &&
+      checkoutForm.value.paymentDetails
+    ) {
+      const {
+        cardNumber,
+        cardHolderName,
+        expirationDate,
+        cvv,
+        billingDetails,
+      } = checkoutForm.value.paymentDetails;
+
+      if (
+        !cardNumber ||
+        !cardHolderName ||
+        !expirationDate ||
+        !cvv ||
+        !billingDetails?.street ||
+        !billingDetails?.city ||
+        !billingDetails?.state ||
+        !billingDetails?.zipCode
+      ) {
+        throw new Error(
+          "All fields in payment details are required and cannot be empty.",
+        );
+      }
+    }
     return useCheckout.process({
       ...checkoutForm.value,
       changeFor: checkoutForm.value && Number(checkoutForm.value.changeFor),
@@ -70,9 +110,18 @@ const {
   execute: handleOrder,
 } = useAsyncData(
   "order",
-  () => {
+  async () => {
     if (!checkoutForm.value) {
       throw new Error("Checkout form is undefined.");
+    }
+    try {
+      await handleProcess();
+
+      if (processStatus.value !== "success") {
+        throw new Error("Failed to process checkout. Please check the form.");
+      }
+    } catch (error) {
+      throw new Error("Error during processing.");
     }
     return useCheckout.checkout(checkoutForm.value);
   },
@@ -80,6 +129,7 @@ const {
     immediate: false,
   },
 );
+
 const validate = async () => {
   await handleValidate();
   status.value == "success" && data.value && navigateTo("/order/checkout");
@@ -97,7 +147,6 @@ watch(order, () => {
     v-if="cartStore && cartStore.cart"
     class="flex max-h-[24rem] flex-1 flex-col justify-between gap-6 rounded-xl bg-secondary p-6 text-sm"
   >
-    {{ checkoutForm }}
     <div class="flex justify-between">
       <h3 class="font-bold">Summary</h3>
       <span class="font-normal leading-[18.2px] text-neutral-600">
@@ -145,15 +194,10 @@ watch(order, () => {
       <BaseFormButton
         v-if="step == 2"
         :loading="processStatus == 'pending'"
-        @handleClick="handleProcess"
+        @handleClick="handleOrder"
         >Checkout
       </BaseFormButton>
-      <BaseFormButton
-        v-if="checkout"
-        :loading="orderStatus == 'pending'"
-        @handleClick="handleOrder"
-        >Submit Order
-      </BaseFormButton>
+
       <BaseFormButton to="/products" class="bg-secondary text-neutral-600"
         >Return to Shopping</BaseFormButton
       >

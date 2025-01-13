@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { z } from "zod";
+import type { Cart } from "~/types/Cart";
 
 export const useCheckoutStore = defineStore("checkout", () => {
-  const checkoutForm = ref();
+  const checkoutForm = ref<Cart>();
 
   const checkout = async (body: Object) => {
     return await $fetch("/api/orders", {

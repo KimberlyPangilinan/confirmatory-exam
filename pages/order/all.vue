@@ -4,7 +4,7 @@ const { data, status } = useLazyFetch("/api/orders");
 const authStore = useAuthStore();
 </script>
 <template>
-  <Loader v-if="!authStore.auth || status == 'pending'" />
+  <LoaderSkeleton v-if="!authStore.auth || status == 'pending'" />
   <BaseSection v-else>
     <template #header>My Orders</template>
     <div class="relative overflow-x-auto">
@@ -42,7 +42,7 @@ const authStore = useAuthStore();
               {{ order.id }}
             </th>
             <td class="px-6 py-4">
-              {{ order.address }}
+              {{ formatAddress(order.address) }}
             </td>
 
             <td class="px-6 py-4">

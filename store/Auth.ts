@@ -3,6 +3,7 @@ import { z } from "zod";
 import type { AuthForm, AuthState, AuthType } from "~/types/Auth";
 
 export const useAuthStore = defineStore("auth", () => {
+  const { $toast } = useNuxtApp();
   const authCookie = useCookie<AuthState | null>("auth");
 
   const auth = ref<AuthState | null>(authCookie.value);
@@ -78,6 +79,7 @@ export const useAuthStore = defineStore("auth", () => {
   function logout() {
     auth.value = null;
     authCookie.value = null;
+    navigateTo("/");
   }
 
   return {

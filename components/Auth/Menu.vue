@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/store/Auth";
 
+const { $toast } = useNuxtApp();
 const authStore = useAuthStore();
 const isDropdownMenuOpen = ref(false);
 const { auth } = storeToRefs(authStore);
 
 const handleLogout = () => {
   authStore.logout();
-  navigateTo("/");
+  $toast.success("Successfully logged out");
 };
 </script>
 <template>
-  <div v-if="auth" class="relative inline-block text-left">
+  <div v-if="auth" class="relative z-[90] inline-block text-left">
     <button
       @click="isDropdownMenuOpen = !isDropdownMenuOpen"
       class="flex items-center justify-center gap-2"

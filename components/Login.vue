@@ -2,6 +2,7 @@
 import { useAuthStore } from "~/store/Auth";
 import type { AuthState } from "~/types/Auth";
 
+const { $toast } = useNuxtApp();
 const authStore = useAuthStore();
 
 const emit = defineEmits(["closeModal"]);
@@ -23,6 +24,7 @@ const handleSubmitLogin = async () => {
   console.log(res && res.access_token, "access");
   res?.access_token && authStore.fetchProfile(res.access_token);
   status.value == "success" && emit("closeModal");
+  $toast.success("Successfully logged in");
   return;
 };
 </script>

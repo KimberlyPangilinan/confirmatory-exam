@@ -121,7 +121,6 @@ watch([billingSameWithShipping, shippingAddress], () => {
           "
           class="flex w-1/2 flex-wrap gap-2"
         >
-          {{ checkoutForm.paymentDetails.billingDetails }}
           <h3 class="w-full font-semibold text-neutral-500">Card Details</h3>
           <BaseFormInput
             required

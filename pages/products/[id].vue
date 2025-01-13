@@ -29,7 +29,7 @@ const cartItem = ref<CartItemType>({
 const handleAddToCart = () => {
   if (data.value) {
     cartItem.value = {
-      id: cart.value?.length + 1 || 0,
+      id: cart.value?.length || 0,
       productID: data.value?.id,
       productName: data.value.title,
       image: data.value.images[0],

@@ -19,8 +19,9 @@ export const useCartStore = defineStore("cart", () => {
       );
       if (existingItem) {
         existingItem.quantity += cartItem.quantity || 1;
+      } else {
+        cart.value.unshift({ ...cartItem, quantity: cartItem.quantity || 1 });
       }
-      cart.value.unshift({ ...cartItem, quantity: cartItem.quantity || 1 });
     }
   };
 

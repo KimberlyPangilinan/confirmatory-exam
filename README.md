@@ -56,7 +56,13 @@ confirmatory-exam/
 └── README.md            # Documentation
 ```
 
-## Mock API Endpoints
+## Endpoints
+
+### API Reference
+
+- [Platzi FakeStore API](https://api.escuelajs.co/api/v1)
+
+### Mock API Endpoints
 
 Below is the list of available endpoints for the application, which includes mock endpoints.
 
@@ -76,11 +82,21 @@ Below is the list of available endpoints for the application, which includes moc
 
 - **Description:** Gets all orders.
 
-
 ## 5. Credentials
+
 email: john@mail.com
 password: changeme
 
 ## 6. Known Limitations
-- Checkbox for selecting same as billing address is soon to be implemented
 
+1. Error Handling
+
+- Validation errors may not provide detailed feedback for all input issues.
+
+2. Form Validation
+
+- Most validation, like validating card details specific requirements, are not fully implemented.
+
+3. Performance Issues
+
+- Optimizing images, are not fully implemented.

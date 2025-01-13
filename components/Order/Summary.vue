@@ -6,19 +6,25 @@ import { useCheckoutStore } from "~/store/Checkout";
 const { step = 1 } = defineProps({
   step: Number,
 });
-const useCart = useCartStore();
-const useAuth = useAuthStore();
+const cartStore = useCartStore();
+const authStore = useAuthStore();
 const useCheckout = useCheckoutStore();
 
 const { checkoutForm } = storeToRefs(useCheckout);
 
 const isLoginModalOpen = ref<boolean>();
-const { auth } = storeToRefs(useAuth);
+const { auth } = storeToRefs(authStore);
 
 checkoutForm.value = {
+  id: cartStore.cart.length || 1,
   userId: Number(auth.value && auth.value.user?.id),
-  total: useCart.total,
-  cart: useCart.cart,
+  total: cartStore.total,
+  cart: cartStore.cart,
+  changeFor: 0,
+  address: (auth.value && auth.value.user?.homeAddress) || "",
+  paymentMethod: "CASH ON DELIVERY",
+  deliveryMethod: "STANDARD",
+  deliveryInstructions: "",
 };
 
 const {
@@ -26,9 +32,18 @@ const {
   status,
   error,
   execute: handleValidate,
-} = useAsyncData("validate", () => useCart.validate(checkoutForm.value), {
-  immediate: false,
-});
+} = useAsyncData(
+  "validate",
+  () => {
+    if (!checkoutForm.value) {
+      throw new Error("Checkout form is undefined.");
+    }
+    return useCheckout.validate(checkoutForm.value);
+  },
+  {
+    immediate: false,
+  },
+);
 
 const {
   data: checkout,
@@ -40,7 +55,7 @@ const {
   () => {
     return useCheckout.process({
       ...checkoutForm.value,
-      changeFor: Number(checkoutForm.value.changeFor),
+      changeFor: checkoutForm.value && Number(checkoutForm.value.changeFor),
     });
   },
   {
@@ -53,9 +68,18 @@ const {
   status: orderStatus,
   error: orderError,
   execute: handleOrder,
-} = useAsyncData("order", () => useCheckout.checkout(checkoutForm.value), {
-  immediate: false,
-});
+} = useAsyncData(
+  "order",
+  () => {
+    if (!checkoutForm.value) {
+      throw new Error("Checkout form is undefined.");
+    }
+    return useCheckout.checkout(checkoutForm.value);
+  },
+  {
+    immediate: false,
+  },
+);
 const validate = async () => {
   await handleValidate();
   status.value == "success" && data.value && navigateTo("/order/checkout");
@@ -64,19 +88,20 @@ const validate = async () => {
 watch(order, () => {
   if (order.value) {
     navigateTo("/order/success");
-    useCart.clearCart();
+    cartStore.clearCart();
   }
 });
 </script>
 <template>
   <div
-    v-if="useCart && useCart.cart"
+    v-if="cartStore && cartStore.cart"
     class="flex max-h-[24rem] flex-1 flex-col justify-between gap-6 rounded-xl bg-secondary p-6 text-sm"
   >
+    {{ checkoutForm }}
     <div class="flex justify-between">
       <h3 class="font-bold">Summary</h3>
       <span class="font-normal leading-[18.2px] text-neutral-600">
-        ({{ useCart.cart.length }} items)
+        ({{ cartStore.cart.length }} items)
       </span>
     </div>
     <div>
@@ -84,7 +109,7 @@ watch(order, () => {
         <li class="flex justify-between">
           <span class="font-normal">Subtotal:</span>
           <span class="font-semibold">{{
-            $formatCurrency(useCart.total, "PHP")
+            $formatCurrency(cartStore.total, "PHP")
           }}</span>
         </li>
         <li class="flex justify-between">
@@ -95,7 +120,7 @@ watch(order, () => {
         <li class="flex justify-between">
           <span class="font-normal">Total:</span>
           <span class="font-semibold">{{
-            $formatCurrency(useCart.total, "PHP")
+            $formatCurrency(cartStore.total, "PHP")
           }}</span>
         </li>
       </ul>
@@ -121,14 +146,14 @@ watch(order, () => {
         v-if="step == 2"
         :loading="processStatus == 'pending'"
         @handleClick="handleProcess"
-        >Checkout</BaseFormButton
-      >
+        >Checkout
+      </BaseFormButton>
       <BaseFormButton
         v-if="checkout"
         :loading="orderStatus == 'pending'"
         @handleClick="handleOrder"
-        >Submit Order</BaseFormButton
-      >
+        >Submit Order
+      </BaseFormButton>
       <BaseFormButton to="/products" class="bg-secondary text-neutral-600"
         >Return to Shopping</BaseFormButton
       >

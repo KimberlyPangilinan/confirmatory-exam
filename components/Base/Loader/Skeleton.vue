@@ -9,7 +9,7 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="grid grid-cols-6 gap-4">
+  <div class="z-[-1] grid grid-cols-6 gap-4">
     <!-- Skeleton Loader Items -->
     <div
       v-for="i in length"

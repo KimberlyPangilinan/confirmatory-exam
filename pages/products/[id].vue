@@ -5,9 +5,9 @@ import type { CartItemType } from "~/types/Cart";
 import type { ProductType } from "~/types/Product";
 const { $formatCurrency } = useNuxtApp();
 const route = useRoute();
-const useCart = useCartStore();
+const cartStore = useCartStore();
 
-const { cart } = storeToRefs(useCart);
+const { cart } = storeToRefs(cartStore);
 const { data, status } = useCustomFetch<ProductType>(
   `/products/${route.params.id}`,
   {
@@ -40,7 +40,7 @@ const handleAddToCart = () => {
     };
   }
 
-  useCart.add(cartItem.value);
+  cartStore.add(cartItem.value);
   toast("Added to cart", {
     autoClose: 1000,
     type: "success",

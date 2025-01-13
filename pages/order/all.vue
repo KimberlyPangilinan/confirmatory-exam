@@ -1,10 +1,10 @@
 <script setup>
 import { useAuthStore } from "~/store/Auth";
 const { data, status } = useLazyFetch("/api/orders");
-const useAuth = useAuthStore();
+const authStore = useAuthStore();
 </script>
 <template>
-  <Loader v-if="!useAuth.auth || status == 'pending'" />
+  <Loader v-if="!authStore.auth || status == 'pending'" />
   <BaseSection v-else>
     <template #header>My Orders</template>
     <div class="relative overflow-x-auto">

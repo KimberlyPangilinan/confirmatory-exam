@@ -3,7 +3,7 @@ import { useProductStore } from "~/store/Product";
 import type { ProductType } from "~/types/Product";
 import { useAsyncData } from "#app";
 
-export function useProducts() {
+export function useProductFetch() {
   const category = ref<number | string>("");
   const query = ref({
     offset: 0,
@@ -71,7 +71,6 @@ export function useProducts() {
     query,
     search,
     reachedLimit,
-    data,
     status,
     filterCategory,
     debouncedSearch,

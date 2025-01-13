@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { useCartStore } from "~/store/Cart";
 
-const useCart = useCartStore();
-const { cart } = storeToRefs(useCart);
+const cartStore = useCartStore();
+const { cart } = storeToRefs(cartStore);
 
 const menuLinks = [
   { title: "Order Now", link: "/products" },

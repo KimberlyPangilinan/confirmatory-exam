@@ -2,7 +2,7 @@
 import { useAuthStore } from "~/store/Auth";
 import type { AuthState } from "~/types/Auth";
 
-const useAuth = useAuthStore();
+const authStore = useAuthStore();
 
 const emit = defineEmits(["closeModal"]);
 
@@ -12,16 +12,16 @@ const credentials = ref({
 });
 
 const { data, status, error, execute } = await useAsyncData(
-  () => useAuth.signIn(credentials.value),
+  () => authStore.signIn(credentials.value),
   { immediate: false },
 );
 
 const handleSubmitLogin = async () => {
   await execute();
-  useAuth.setToken(data.value);
+  authStore.setToken(data.value);
   const res: AuthState | null = data.value;
   console.log(res && res.access_token, "access");
-  res?.access_token && useAuth.fetchProfile(res.access_token);
+  res?.access_token && authStore.fetchProfile(res.access_token);
   status.value == "success" && emit("closeModal");
   return;
 };
@@ -56,7 +56,7 @@ const handleSubmitLogin = async () => {
           placeholder="Password"
         />
       </div>
-      <span class="text-sm text-primary">{{ error || useAuth.error }}</span>
+      <span class="text-sm text-primary">{{ error || authStore.error }}</span>
       <div class="flex flex-col gap-1 font-semibold">
         <BaseFormButton
           :loading="status == 'pending'"

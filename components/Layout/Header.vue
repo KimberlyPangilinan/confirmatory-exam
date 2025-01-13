@@ -2,12 +2,12 @@
 import { useAuthStore } from "~/store/Auth";
 
 const isLoginModalOpen = ref(false);
-const useAuth = useAuthStore();
-const { auth, error } = storeToRefs(useAuth);
+const authStore = useAuthStore();
+const { auth, error } = storeToRefs(authStore);
 </script>
 <template>
   <header
-    class="flex h-[111px] items-center justify-between rounded-b-lg bg-primary px-[49px] py-[10px]"
+    class="flex h-[111px] items-center justify-between rounded-b-[2rem] bg-primary px-[49px] py-[10px]"
   >
     <LayoutLogo />
     <div class="flex items-center justify-center gap-4">

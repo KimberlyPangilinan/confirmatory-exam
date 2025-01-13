@@ -7,19 +7,19 @@ definePageMeta({
   middleware: ["authenticated"],
 });
 
-const useCart = useCartStore();
-const useAuth = useAuthStore();
+const cartStore = useCartStore();
+const authStore = useAuthStore();
 const useCheckout = useCheckoutStore();
 
 const { checkoutForm } = storeToRefs(useCheckout);
 checkoutForm.value = {
   id: 1,
   userId: 1,
-  cart: useCart.cart || [],
+  cart: cartStore.cart || [],
   changeFor: 0,
 };
 
-const { auth } = storeToRefs(useAuth);
+const { auth } = storeToRefs(authStore);
 </script>
 <template>
   <BaseSection v-if="auth && auth.user">

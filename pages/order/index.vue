@@ -7,7 +7,7 @@ const isRemoving = ref(false);
 const isRemovingAll = ref(false);
 const currentItem = ref();
 
-const useCart = useCartStore();
+const cartStore = useCartStore();
 
 const updateQuantity = (cartItem: CartItemType, increment = true) => {
   currentItem.value = cartItem;
@@ -23,11 +23,11 @@ const updateQuantity = (cartItem: CartItemType, increment = true) => {
 };
 
 const removeAllItems = () => {
-  useCart.clearCart();
+  cartStore.clearCart();
   isRemovingAll.value = false;
 };
 const removeItem = () => {
-  useCart.removeItem(currentItem.value);
+  cartStore.removeItem(currentItem.value);
   isRemoving.value = false;
 };
 </script>
@@ -46,7 +46,7 @@ const removeItem = () => {
           </div>
         </div>
         <button
-          v-if="useCart.cart.length"
+          v-if="cartStore.cart.length"
           @click="isRemovingAll = true"
           class="cursor-pointer text-base font-semibold text-primary hover:underline"
         >
@@ -55,10 +55,10 @@ const removeItem = () => {
       </div>
     </template>
 
-    <div v-if="useCart.cart.length" class="flex justify-between gap-4">
+    <div v-if="cartStore.cart.length" class="flex justify-between gap-4">
       <div class="flex w-2/3 flex-col gap-4">
         <div
-          v-for="item in useCart.cart"
+          v-for="item in cartStore.cart"
           class="flex rounded-xl bg-secondary p-4"
         >
           <div class="w-24">

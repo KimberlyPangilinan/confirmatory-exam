@@ -3,7 +3,7 @@ const props = defineProps({
   img: String,
   title: String,
   to: String,
-  value: String,
+  value: String || null,
 });
 
 const model = defineModel();
@@ -20,7 +20,10 @@ const model = defineModel();
         <slot name="header" />
       </h3>
       <div>
-        <input type="radio" :checked="model && model === value" />
+        <input
+          type="radio"
+          :checked="model && model === value && model !== ''"
+        />
       </div>
     </header>
     <div v-if="$slots.default" class="p-4 text-[#6C757D]">

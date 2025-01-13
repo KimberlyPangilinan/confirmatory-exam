@@ -4,8 +4,8 @@ import { type ProductState, type ProductType } from "~/types/Product";
 // TODO: add autoimport for store files and pinia functions
 
 export const useProductStore = defineStore("product", () => {
-  const products = ref<ProductType[]>([]); // Now explicitly typed as ProductType[]
-  const isLoading = ref<boolean>(false); // Track loading state
+  const products = ref<ProductType[]>([]);
+  const isLoading = ref<boolean>(false);
 
   // Fetch products
   const fetch = async (
@@ -16,21 +16,23 @@ export const useProductStore = defineStore("product", () => {
     return await $fetch(endpoint, options);
   };
   const isAscending = ref(false);
-  const sortedByPrice = computed(() => {
-    return [...products.value].sort((a, b) => {
+  function sortBy() {
+    isAscending.value = !isAscending.value;
+    products.value = [...products.value].sort((a, b) => {
       if (isAscending.value) {
-        return a.price - b.price; // Ascending order
+        return a.price - b.price;
       } else {
-        return b.price - a.price; // Descending order
+        return b.price - a.price;
       }
     });
-  });
+    return;
+  }
 
   return {
     products,
     isLoading,
     fetch,
-    sortedByPrice,
+    sortBy,
     isAscending,
   };
 });

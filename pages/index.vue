@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useProductStore } from "~/store/Product";
-import type { ProductState, ProductType } from "~/types/Product";
+import type { ProductType } from "~/types/Product";
 import type { CategoryType } from "~/types/Category";
+
+useProducts();
 const productStore = useProductStore();
-const { data, status, execute } = useAsyncData<ProductType[]>("products", () =>
-  productStore.fetch("", {}),
-);
+
 const { data: categories } = useCustomFetch<CategoryType[]>("/categories");
 
 const promotionalContent = [
@@ -69,6 +69,9 @@ const newProducts = [
   <!-- Popular Section -->
   <BaseSection>
     <template #header>Popular</template>
-    <ProductList v-if="data" :products="data.slice(0, 6)" />
+    <ProductList
+      v-if="productStore.products"
+      :products="productStore.products.slice(0, 6)"
+    />
   </BaseSection>
 </template>

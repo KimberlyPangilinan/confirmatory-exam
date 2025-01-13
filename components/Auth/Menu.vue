@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useAuthStore } from "~/store/Auth";
 
-const useAuth = useAuthStore();
+const authStore = useAuthStore();
 const isDropdownMenuOpen = ref(false);
-const { auth } = storeToRefs(useAuth);
+const { auth } = storeToRefs(authStore);
 
 const handleLogout = () => {
-  useAuth.logout();
+  authStore.logout();
   navigateTo("/");
 };
 </script>

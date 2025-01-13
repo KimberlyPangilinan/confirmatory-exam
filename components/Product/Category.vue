@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { useProductStore } from "~/store/Product";
 import type { CategoryType } from "~/types/Category";
-import type { ProductState, ProductType } from "~/types/Product";
 
 const category = ref<number | string>("");
 const query = ref({

@@ -8,12 +8,8 @@ export const useCarouselConfig = () => {
         itemsToShow: 1,
         snapAlign: "center",
       },
-      400: {
-        itemsToShow: 1.5,
-        snapAlign: "start",
-      },
       500: {
-        itemsToShow: 1.8,
+        itemsToShow: 1.3,
         snapAlign: "start",
       },
     },

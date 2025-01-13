@@ -11,7 +11,7 @@ export interface Cart {
   id: number;
   cart: CartItemType[];
   userId: number;
-  address: string;
+  address: Address;
   total: number;
   shippingFee?: number;
   paymentMethod: string;
@@ -24,7 +24,7 @@ export interface Cart {
   createdAt?: Date;
 }
 
-type BillingDetails = {
+type Address = {
   street: string;
   city: string;
   state: string;
@@ -36,5 +36,5 @@ type PaymentDetails = {
   cardHolderName: string;
   expirationDate: string;
   cvv: string;
-  billingDetails: BillingDetails;
+  billingDetails: Address;
 };

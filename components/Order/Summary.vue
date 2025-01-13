@@ -15,6 +15,13 @@ const { checkoutForm } = storeToRefs(useCheckout);
 const isLoginModalOpen = ref<boolean>();
 const { auth } = storeToRefs(authStore);
 
+const defaultAddress = {
+  street: "",
+  city: "",
+  state: "",
+  zipCode: "",
+};
+
 checkoutForm.value = {
   id: cartStore.cart.length || 1,
   userId: Number(auth.value && auth.value.user?.id),
@@ -23,7 +30,9 @@ checkoutForm.value = {
     ((checkoutForm.value ? checkoutForm.value.shippingFee : 0) || 0),
   cart: cartStore.cart,
   changeFor: 0,
-  address: (auth.value && auth.value.user?.homeAddress) || "",
+  address:
+    (auth.value && auth.value.user && auth.value.user.homeAddress) ??
+    defaultAddress,
   paymentMethod: "CASH ON DELIVERY",
   deliveryMethod: "STANDARD",
   deliveryInstructions: "",
@@ -33,12 +42,7 @@ checkoutForm.value = {
     cardHolderName: "",
     expirationDate: "",
     cvv: "",
-    billingDetails: {
-      street: "",
-      city: "",
-      state: "",
-      zipCode: "",
-    },
+    billingDetails: defaultAddress,
   },
 };
 
@@ -60,7 +64,6 @@ const {
   },
 );
 
-const shippingFee = ref(data.value && data.value);
 const {
   data: checkout,
   status: processStatus,

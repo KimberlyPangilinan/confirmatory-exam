@@ -7,6 +7,14 @@ const useCheckout = useCheckoutStore();
 
 const { checkoutForm } = storeToRefs(useCheckout);
 const { auth } = storeToRefs(authStore);
+const billingSameWithShipping = ref(false);
+const shippingAddress = ref("HOME");
+watch([billingSameWithShipping, shippingAddress], () => {
+  if (checkoutForm.value?.paymentDetails && billingSameWithShipping.value) {
+    checkoutForm.value.paymentDetails.billingDetails =
+      checkoutForm.value.address;
+  }
+});
 </script>
 <template>
   <div>
@@ -22,21 +30,23 @@ const { auth } = storeToRefs(authStore);
           </p>
         </BaseCardSelect>
         <BaseCardSelect
-          v-model="checkoutForm.address"
-          :value="auth.user.homeAddress"
+          @click="checkoutForm.address = auth.user.homeAddress"
+          v-model="shippingAddress"
+          value="HOME"
         >
           <template #header> My Home Address </template>
           <p class="w-[16em] text-sm text-neutral-500">
-            {{ auth.user.homeAddress }}
+            {{ formatAddress(auth.user.homeAddress) }}
           </p>
         </BaseCardSelect>
         <BaseCardSelect
-          v-model="checkoutForm.address"
-          :value="auth.user.workAddress"
+          @click="checkoutForm.address = auth.user.workAddress"
+          v-model="shippingAddress"
+          value="WORK"
         >
           <template #header> Work/Office </template>
           <p class="w-[16em] text-sm text-neutral-500">
-            {{ auth.user.workAddress }}
+            {{ formatAddress(auth.user.workAddress) }}
           </p>
         </BaseCardSelect>
       </div>
@@ -52,9 +62,35 @@ const { auth } = storeToRefs(authStore);
           </p>
         </BaseCardSelect>
         <BaseCardSelect v-model="checkoutForm.paymentMethod" value="PAYPAL">
-          <template #header> PayPal </template>
+          <template #header
+            ><img
+              src="/images/payment/PayPal-Logo.png"
+              class="max-h-10 max-w-24"
+          /></template>
           <p class="w-[16em] text-sm text-neutral-500">
             A new tab will open to access your account
+          </p>
+        </BaseCardSelect>
+        <BaseCardSelect v-model="checkoutForm.paymentMethod" value="PAYNAMICS">
+          <template #header>
+            <img
+              src="/images/payment/paynamics_rgb.png"
+              class="max-h-10 max-w-24"
+            />
+          </template>
+          <p class="w-[16em] text-sm text-neutral-500">
+            Choose paynamics services available from you
+          </p>
+        </BaseCardSelect>
+        <BaseCardSelect v-model="checkoutForm.paymentMethod" value="CARD">
+          <template #header>
+            <img
+              src="/images/payment/Mastercard-Emblem.png"
+              class="max-h-10 max-w-24"
+            />
+          </template>
+          <p class="w-[16em] text-sm text-neutral-500">
+            Choose Mastercard savings for you
           </p>
         </BaseCardSelect>
         <BaseCardSelect
@@ -64,18 +100,6 @@ const { auth } = storeToRefs(authStore);
           <template #header> Loyalty Points </template>
           <p class="w-[16em] text-sm text-neutral-500">
             Pay using your earned loyalty points
-          </p>
-        </BaseCardSelect>
-        <BaseCardSelect v-model="checkoutForm.paymentMethod" value="PAYNAMICS">
-          <template #header> Paynamics </template>
-          <p class="w-[16em] text-sm text-neutral-500">
-            Choose paynamics services available from you
-          </p>
-        </BaseCardSelect>
-        <BaseCardSelect v-model="checkoutForm.paymentMethod" value="CARD">
-          <template #header> Card </template>
-          <p class="w-[16em] text-sm text-neutral-500">
-            Choose paynamics services available from you
           </p>
         </BaseCardSelect>
 
@@ -97,7 +121,8 @@ const { auth } = storeToRefs(authStore);
           "
           class="flex w-1/2 flex-wrap gap-2"
         >
-          <h3 class="w-full">Card Details</h3>
+          {{ checkoutForm.paymentDetails.billingDetails }}
+          <h3 class="w-full font-semibold text-neutral-500">Card Details</h3>
           <BaseFormInput
             required
             color="bg-white"
@@ -126,7 +151,15 @@ const { auth } = storeToRefs(authStore);
             placeholder="Enter card holder name"
             v-model="checkoutForm.paymentDetails.cardHolderName"
           />
-          <h3 class="w-full">Billing Details</h3>
+          <h3 class="w-full font-semibold text-neutral-500">Billing Details</h3>
+          <label for="billingCheckbox" class="flex w-full items-center gap-2">
+            <input
+              id="billingCheckbox"
+              type="checkbox"
+              v-model="billingSameWithShipping"
+            />
+            Same as Shipping Address
+          </label>
           <BaseFormInput
             required
             color="bg-white"

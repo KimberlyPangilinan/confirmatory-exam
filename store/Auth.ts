@@ -56,10 +56,18 @@ export const useAuthStore = defineStore("auth", () => {
       ...auth.value,
       user: {
         ...res,
-        homeAddress:
-          "No. 21 St. Agustin Street, Brgy. De Jose Delgado City 2234 Philippines",
-        workAddress:
-          "No. 123 Main Street, Brgy. San Antonio City 2345 Philippines",
+        homeAddress: {
+          street: "No. 21 St. Agustin Street",
+          city: "Brgy. De Jose Delgado City",
+          zipCode: "2234",
+          state: "Philippines",
+        },
+        workAddress: {
+          street: "No. 123 Main Street",
+          city: "Brgy. San Antonio City",
+          zipCode: "2345",
+          state: "Philippines",
+        },
         phone: "09123456789",
       },
     };

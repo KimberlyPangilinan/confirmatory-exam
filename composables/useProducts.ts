@@ -25,7 +25,7 @@ export function useProducts() {
     { watch: [query] },
   );
 
-  if (data.value) products.value = data.value;
+  if (data.value && data.value.length) products.value = data.value;
 
   const filterCategory = (id: number) => {
     query.value.offset = 0;

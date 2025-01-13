@@ -5,3 +5,9 @@ export const debounce = (func: Function, delay: number) => {
     timeout = setTimeout(() => func(...args), delay);
   };
 };
+
+export const formatAddress = (address: Record<string, string>) => {
+  if (!address) return "";
+  const { street, city, zipCode, state } = address;
+  return `${street}, ${city}, ${zipCode}, ${state}`;
+};

@@ -10,7 +10,12 @@ const bodySchema = z.object({
     )
     .min(1, "Cart must have at least one item"),
   changeFor: z.optional(z.number()),
-  address: z.string(),
+  address: z.object({
+    street: z.string(),
+    city: z.string(),
+    state: z.string(),
+    zipCode: z.string(),
+  }),
   paymentMethod: z.string(),
   delivery: z.optional(z.string()),
   requestCutlery: z.optional(z.boolean()),

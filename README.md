@@ -10,8 +10,10 @@ This documentation will guide you through installing and setting up the full sta
 2. [Prerequisites](#prerequisites)
 3. [Installation](#installation)
 4. [Folder Structure](#folder-structure)
-5. [Endpoints](#endpoints)
-6. [Credentials](#credentials)
+5. [API Endpoints](#api-endpoints)
+6. [Testing Instructions](#testing-instructions)
+7. [Credentials](#credentials)
+8. [Known Limitations](#known-limitations)
 
 ## Prerequisites
 
@@ -53,16 +55,34 @@ confirmatory-exam/
 ├── nuxt.config.js       # Nuxt configuration file
 ├── .env                 # Environment variables
 ├── package.json         # Project dependencies and scripts
+├── error.vue            # Customized error page
 └── README.md            # Documentation
 ```
 
-## Endpoints
-
-### API Reference
+## API Endpoints
 
 - [Platzi FakeStore API](https://api.escuelajs.co/api/v1)
 
-### Mock API Endpoints
+### 1. **POST /auth/login**
+
+Body
+
+```
+   {
+      "email": "john@mail.com",
+      "password": "changeme"
+   }
+```
+
+### 2. **GET /products**
+
+## Testing Instructions
+
+- [POSTMAN COLLECTION](https://www.postman.com/cynamoln-042623/workspace/mock-api/collection/40711221-3a8204ba-888e-47fc-bd8b-0ba4b8b678f1?action=share&creator=40711221&active-environment=40711221-61ee58b7-7926-4af3-8aef-1bc122c69333)
+
+- Import the collection above using POSTMAN Application, make sure New Environment is being used
+
+## Mock API Endpoints
 
 Below is the list of available endpoints for the application, which includes mock endpoints.
 
@@ -82,12 +102,12 @@ Below is the list of available endpoints for the application, which includes moc
 
 - **Description:** Gets all orders.
 
-## 5. Credentials
+## Credentials
 
 email: john@mail.com
 password: changeme
 
-## 6. Known Limitations
+## Known Limitations
 
 1. Error Handling
 

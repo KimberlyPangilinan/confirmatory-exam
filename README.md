@@ -11,6 +11,7 @@ This documentation will guide you through installing and setting up the full sta
 3. [Installation](#installation)
 4. [Folder Structure](#folder-structure)
 5. [Endpoints](#endpoints)
+6. [Credentials](#credentials)
 
 ## Prerequisites
 
@@ -74,3 +75,12 @@ Below is the list of available endpoints for the application, which includes moc
 ### 4. **GET /api/orders**
 
 - **Description:** Gets all orders.
+
+
+## 5. Credentials
+email: john@mail.com
+password: changeme
+
+## 6. Known Limitations
+- Checkbox for selecting same as billing address is soon to be implemented
+

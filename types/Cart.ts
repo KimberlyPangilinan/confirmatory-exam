@@ -13,6 +13,7 @@ export interface Cart {
   userId: number;
   address: string;
   total: number;
+  shippingFee?: number;
   paymentMethod: string;
   paymentDetails?: PaymentDetails;
   deliveryMethod: string;

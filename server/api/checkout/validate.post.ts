@@ -8,14 +8,18 @@ const bodySchema = z.object({
       }),
     )
     .min(1, "Cart must have at least one item"),
+  shippingFee: z.number().optional(),
 });
 
 export default defineEventHandler(async (event) => {
   try {
     const body = await readValidatedBody(event, bodySchema.parse);
+    body.shippingFee = 200;
     return {
       message: "Successfully validated",
-      data: body,
+      data: {
+        shippingFee: body.shippingFee, // Include the shipping fee in the response data
+      },
     };
   } catch (error: any) {
     // Handle validation errors

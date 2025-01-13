@@ -45,12 +45,13 @@ const handleLogout = () => {
       >
         <ul class="py-1" role="none">
           <li
+            @click="navigateTo('/order/all')"
             class="block w-full px-4 py-2 text-sm text-gray-700 hover:bg-red-50"
             role="menuitem"
             tabindex="-1"
             id="menu-item-0"
           >
-            Profile
+            My Orders
           </li>
           <li
             @click="handleLogout"

@@ -6,7 +6,7 @@ const { cart } = storeToRefs(cartStore);
 
 const menuLinks = [
   { title: "Order Now", link: "/products" },
-  { title: "Store Locator", link: "/" },
+  { title: "Store Locator", link: "/store" },
   { title: "FAQs", link: "/faq" },
   { title: "Cart", link: "/order" },
 ];

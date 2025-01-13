@@ -18,13 +18,16 @@ const { auth } = storeToRefs(authStore);
 checkoutForm.value = {
   id: cartStore.cart.length || 1,
   userId: Number(auth.value && auth.value.user?.id),
-  total: cartStore.total,
+  total:
+    cartStore.total +
+    ((checkoutForm.value ? checkoutForm.value.shippingFee : 0) || 0),
   cart: cartStore.cart,
   changeFor: 0,
   address: (auth.value && auth.value.user?.homeAddress) || "",
   paymentMethod: "CASH ON DELIVERY",
   deliveryMethod: "STANDARD",
   deliveryInstructions: "",
+  shippingFee: checkoutForm.value && checkoutForm.value.shippingFee,
   paymentDetails: {
     cardNumber: "",
     cardHolderName: "",
@@ -57,6 +60,7 @@ const {
   },
 );
 
+const shippingFee = ref(data.value && data.value);
 const {
   data: checkout,
   status: processStatus,
@@ -133,6 +137,9 @@ const {
 const validate = async () => {
   await handleValidate();
   status.value == "success" && data.value && navigateTo("/order/checkout");
+  if (checkoutForm.value)
+    checkoutForm.value.shippingFee =
+      (data.value && data.value.data.shippingFee) || 0;
 };
 
 watch(order, () => {
@@ -163,13 +170,17 @@ watch(order, () => {
         </li>
         <li class="flex justify-between">
           <span class="font-normal">Shipping:</span>
-          <span class="font-semibold">Calculated at checkout</span>
+          <span class="font-semibold">{{
+            checkoutForm && checkoutForm.shippingFee
+              ? $formatCurrency(checkoutForm.shippingFee, "PHP")
+              : "Calculated at checkout"
+          }}</span>
         </li>
         <hr class="my-4" />
         <li class="flex justify-between">
           <span class="font-normal">Total:</span>
-          <span class="font-semibold">{{
-            $formatCurrency(cartStore.total, "PHP")
+          <span class="font-semibold" v-if="checkoutForm">{{
+            $formatCurrency(checkoutForm.total, "PHP")
           }}</span>
         </li>
       </ul>
